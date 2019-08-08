@@ -1,0 +1,151 @@
+540  cd end2end/
+  541  ls
+  542  nano openssl.conf 
+  543  ls
+  544  xxd -p mqtt-serv.pem 
+  545  xxd -p ca.pem 
+  546  ls
+  547  rm mqtt-serv.crt mqtt-serv.csr mqtt-serv.pem openssl.conf 
+  548  ls
+  549  openssl req -x509 -new -nodes -key ca.pem -sha256 -days 1024 -out rootCA.crt
+  550  ls
+  551  openssl ecparam -name secp521r1 -genkey -noout -out mqtt-serv.pem
+  552  openssl req -new -out mqtt-serv.csr -key mqtt-serv.pem -config rootCA.crt -sha256
+  553  openssl req -new -out mqtt-serv.csr -key mqtt-serv.pem --cert rootCA.crt -sha256
+  554  openssl req -new -out mqtt-serv.csr -key mqtt-serv.pem --certfile rootCA.crt -sha256
+  555  touch openssl.conf
+  556  openssl req -new -x509 -days 3650 -key ca.pem -config openssl.conf -out ca.crt -sha256
+  557  openssl ecparam -name secp521r1 -genkey -noout -out mqtt-serv.pem
+  558  ls
+  559  openssl req -new -out mqtt-serv.csr -key mqtt-serv.pem -config openssl.conf -sha256
+  560  openssl x509 -req -days 3650 -in mqtt-serv.csr -CA ca.crt -CAkey ca.pem -CAcreateserial -out mqtt-serv.crt -extensions v3_req -extfile openssl.conf -sha256
+  561  openssl x509 -noout -in mqtt-serv.crt -fingerprint
+  562  sudo chown mosquitto:mosquitto *
+  563  ls
+  564  sudo cp ca.crt mqtt-serv.crt mqtt-serv.pem /etc/mosquitto/mqtt-cert/
+  565  mosquitto_sub -h 127.0.0.1 -p 8883 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t end2end
+  566  mosquitto_sub -h 127.0.0.1 -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t end2end
+  567  ifconfig'
+  568  ifconfig
+  569  cd /etc/mosquitto/
+  570  ls
+  571  rm -rf mqtt-cert/
+  572  sudo rm -rf mqtt-cert/
+  573  ls
+  574  cat conf.d/
+  575  cat mosquitto.conf cd
+  576  ls
+  577  mkdir mqtt-cert
+  578  sudo mkdir mqtt-cert
+  579  cd mqtt-cert/
+  580  ls
+  581  sudo systemctl restart mosquitto
+  582  sudo systemctl status mosquitto
+  583  mosquitto_pub -h 127.0.0.1 -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t end2end -m {\"set\":\"toggle\"}
+  584  cd -
+  585  ls
+  586  nano mosquitto.conf 
+  587  sudo systemctl restart mosquitto
+  588  sudo systemctl status mosquitto
+  589  nano mosquitto.conf 
+  590  sudo nano mosquitto.conf 
+  591  sudo systemctl restart mosquitto
+  592  sudo systemctl status mosquitto
+  593  mosquitto_pub -h 127.0.0.1 -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t end2end -m {\"set\":\"toggle\"}
+  594  mosquitto_sub -u "siddhant" -P "Namita086" -t "abc" -p 12345
+  595  ifconfig
+  596  mosquitto_sub -u "siddhant" -P "Namita086" -t "abc" -p 12345
+  597  cd ~
+  598  mosquitto_pub -u "siddhant" -P "Namita086" -t "abc" -p 12345 -m "hey there"
+  599  mosquitto_pub -u "siddhant" -P "Namita086" -t "abc" -p 12345 
+  600  mosquitto_pub -u "siddhant" -P "Namita086" -t "abc" -p 12345 -l
+  601  mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t outTopic
+  602  history
+
+
+*************************************************************************************************************************************************
+
+################################# subscriber  ##############################################
+
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /path/to/ca.crt -t home/recroom/tv/powerstrip/cmd 
+Error: Problem setting TLS options.
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd 
+{"set":"toggle"}
+^C
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ mosquitto_sub -h 192.168.1.128 -p 12345 --cafile /path/to/ca.crt -t home/recroom/tv/powerstrip/status -v &
+[1] 4230
+pi@sidpi:~ $ [1] 14154Error: Problem setting TLS options.                    mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/status quitto_sub -h 192.168.1.128 -p 12345 --cafile /etc/mosquitto//ca.crt -t home/recroom/tv/powerstrip/status  
+^C[1]+  Exit 1                  mosquitto_sub -h 192.168.1.128 -p 12345 --cafile /path/to/ca.crt -t home/recroom/tv/powerstrip/status -v
+
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/status ^C
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/status -v & [1] 14154
+[1] 4525
+bash: [1]: command not found
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/status -v &[1] 14154
+[2] 4529
+bash: [1]: command not found
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/status -v 
+home/recroom/tv/powerstrip/status on
+home/recroom/tv/powerstrip/status on
+home/recroom/tv/powerstrip/status on
+home/recroom/tv/powerstrip/status off
+home/recroom/tv/powerstrip/status off
+home/recroom/tv/powerstrip/status off
+home/recroom/tv/powerstrip/status on
+home/recroom/tv/powerstrip/status on
+home/recroom/tv/powerstrip/status on
+
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t demo  -v 
+^C
+pi@sidpi:~ $ mosquitto_sub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t demo -v 
+\demo on
+demo off
+
+
+
+######################################  publisher  ##############################################################
+
+
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle^C}
+pi@sidpi:~ $ ^C
+pi@sidpi:~ $ ^C
+pi@sidpi:~ $ mosquitto_pub -h 192.168.1.128 -p 12345 --cafile /path/to/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}
+Error: Problem setting TLS options.
+pi@sidpi:~ $ home/recroom/tv/powerstrip/status on^C
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ mosquitto_pub -h 192.168.1.128 -p 12345 --cafile /path/to/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}
+Error: Problem setting TLS options.
+pi@sidpi:~ $ mosquitto_pub -h 192.168.1.128 -p 12345 --cafile /path/to/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}
+Error: Problem setting TLS options.
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}home/recroom/tv/powerstrip/status on
+Error: Unknown option 'on'.
+
+Use 'mosquitto_pub --help' to see usage.
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ 
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"on\"}
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"}on
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"toggle\"} home/recroom/tv/powerstrip/status on
+
+
+pi@sidpi:~ $ mosquitto_pub -p 12345 --cafile /etc/mosquitto/mqtt-cert/ca.crt -t home/recroom/tv/powerstrip/cmd -m {\"set\":\"on\"} 
+ 
+
+
+
+
+
+
+
+
+
